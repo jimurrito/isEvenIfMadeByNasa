@@ -1,0 +1,10 @@
+<#
+.Description
+IsEven, but in the worst possible way.
+#>
+
+param (
+    $In = $1
+)
+
+if ($In -eq 0) {$true}
