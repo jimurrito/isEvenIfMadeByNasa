@@ -1,0 +1,47 @@
+{
+  "Exception": {
+    "ErrorRecord": "Unable to index into an object of type \"System.String\".",
+    "WasThrownFromThrowStatement": false,
+    "TargetSite": "Void CheckActionPreference(System.Management.Automation.Language.FunctionContext, System.Exception)",
+    "Message": "Unable to index into an object of type \"System.String\".",
+    "Data": {
+      "System.Management.Automation.Interpreter.InterpretedFrameInfo": "Set-Number2Name Test-OneHun <ScriptBlock> <ScriptBlock> <ScriptBlock>"
+    },
+    "InnerException": null,
+    "HelpLink": null,
+    "Source": "System.Management.Automation",
+    "HResult": -2146233087,
+    "StackTrace": "   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)\r\n   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)\r\n   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)\r\n   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)"
+  },
+  "TargetObject": null,
+  "FullyQualifiedErrorId": "CannotIndex",
+  "InvocationInfo": {
+    "MyCommand": null,
+    "BoundParameters": {},
+    "UnboundArguments": [],
+    "ScriptLineNumber": 253,
+    "OffsetInLine": 9,
+    "HistoryId": 1,
+    "ScriptName": "C:\\Users\\james\\Documents\\code\\isEvenIfMadeByNasa\\v2\\NumMapper\\NumMapper.psm1",
+    "Line": "        $Names[($i - 1)] = \"{0}-{1}\" -f $Names[($i - 1)], (Find-OctetSize $i)\r\n",
+    "Statement": "$Names[($i - 1)] = \"{0}-{1}\" -f $Names[($i - 1)], (Find-OctetSize $i)",
+    "PositionMessage": "At C:\\Users\\james\\Documents\\code\\isEvenIfMadeByNasa\\v2\\NumMapper\\NumMapper.psm1:253 char:9\r\n+         $Names[($i - 1)] = \"{0}-{1}\" -f $Names[($i - 1)], (Find-Octet .\r\n+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    "PSScriptRoot": "C:\\Users\\james\\Documents\\code\\isEvenIfMadeByNasa\\v2\\NumMapper",
+    "PSCommandPath": "C:\\Users\\james\\Documents\\code\\isEvenIfMadeByNasa\\v2\\NumMapper\\NumMapper.psm1",
+    "InvocationName": "",
+    "PipelineLength": 0,
+    "PipelinePosition": 0,
+    "ExpectingInput": false,
+    "CommandOrigin": "Internal",
+    "DisplayScriptPosition": null
+  },
+  "ErrorCategory_Category": 7,
+  "ErrorCategory_Activity": "",
+  "ErrorCategory_Reason": "RuntimeException",
+  "ErrorCategory_TargetName": "",
+  "ErrorCategory_TargetType": "",
+  "ErrorCategory_Message": "InvalidOperation: (:) [], RuntimeException",
+  "SerializeExtendedInfo": false,
+  "ErrorDetails_ScriptStackTrace": "at Set-Number2Name, C:\\Users\\james\\Documents\\code\\isEvenIfMadeByNasa\\v2\\NumMapper\\NumMapper.psm1: line 253\r\nat Test-OneHun, C:\\Users\\james\\Documents\\code\\isEvenIfMadeByNasa\\v2\\NumMapper\\PSTestX\\NumMapperTest.psm1: line 33\r\nat <ScriptBlock>, <No file>: line 40\r\nat <ScriptBlock>, <No file>: line 30\r\nat <ScriptBlock>, <No file>: line 22",
+  "PSMessageDetails": null
+}
