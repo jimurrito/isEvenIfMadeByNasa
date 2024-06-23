@@ -95,7 +95,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @("number","mapping","converter","string","int","NumMapper")
 
         # A URL to the license for this module.
         # LicenseUri = ''
@@ -107,7 +107,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = 'https://github.com/jimurrito/isevenifmadebynasa'
 
         # Prerelease string of this module
         # Prerelease = ''

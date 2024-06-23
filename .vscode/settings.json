@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "andreasjhkarlsson",
         "duoquadragintillion",
         "duotrigintillion",
         "duovigintillion",
@@ -18,6 +19,7 @@
         "quinquaquadragintillion",
         "quinquatrigintillion",
         "quinquavigintillion",
+        "ROOTDUMPDIR",
         "septemvigintillion",
         "septendecillion",
         "septenquadragintillion",
@@ -34,5 +36,8 @@
         "untrigintillion",
         "unvigintillion",
         "vigintillion"
+    ],
+    "cSpell.enableFiletypes": [
+        "powershell"
     ]
 }

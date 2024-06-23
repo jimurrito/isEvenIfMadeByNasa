@@ -31,6 +31,6 @@ $TotalTime += $BenchmarkLs | ForEach-Object { return $_[2] }
 #
 $TotalTimer.Stop(); $Runtime = $TotalTimer.Elapsed
 Write-Host ("`nBenchmark Runtime: ({0})m ({1})s ({2})ms" -f $Runtime.Minutes, $Runtime.Seconds, $Runtime.Milliseconds)
-Write-Host ("Avgerage Runtime: ({0})ms" -f ([math]::Round(($TotalTime.Milliseconds | Measure-Object -Average).Average, 2)))
+Write-Host ("Average Runtime: ({0})ms" -f ([math]::Round(($TotalTime.Milliseconds | Measure-Object -Average).Average, 2)))
 Write-Host ("Longest Runtime: ({0})ms" -f ([math]::Round(($TotalTime.Milliseconds | Measure-Object -Maximum).Maximum, 2)))
 Write-Host ("Shortest Runtime: ({0})ms`n" -f ([math]::Round(($TotalTime.Milliseconds | Measure-Object -Minimum).Minimum, 2)))
