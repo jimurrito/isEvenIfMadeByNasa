@@ -192,7 +192,7 @@ function Set-Number2Name {
     )
     # If whole number is one digit
     if ($NumberWorking.Length -eq 1) { return Set-OctetChar2Name $NumberWorking 2 }
-    # If whole number is one digit and is 0
+    # If whole number is 0
     elseif ($NumberWorking -eq "0") { return "zero" }
     # If number is in Teen range
     elseif ($NumberWorking.Length -eq 2 -and $NumberWorking[0] -eq "1") { return Find-TeenRangeNumbers $NumberWorking }
@@ -240,8 +240,8 @@ function Set-Number2Name {
             return (Set-OctetChar2Name $sn $Place)
             #
         }
-        # Join octet
-        return ($applied -join "-")
+        # Joins octet | where-object { $_ } removes any possible null array values.
+        return (($applied | where-object { $_ } ) -join "-")
         #
     }
     #
@@ -256,11 +256,8 @@ function Set-Number2Name {
     #
     [array]::Reverse($Names);
     #
-    foreach ($i in 2..$length) {
-        #
-        $Names[($i - 1)] = "{0}-{1}" -f $Names[($i - 1)], (Find-OctetSize $i)
-        #
-    }
+    # Assigne place value
+    foreach ($i in 2..$length) { $Names[($i - 1)] = "{0}-{1}" -f $Names[($i - 1)], (Find-OctetSize $i) }
     #
     [array]::Reverse($Names);
     #

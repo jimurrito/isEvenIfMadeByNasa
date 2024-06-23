@@ -12,7 +12,7 @@
 RootModule = 'NumMapper.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.0.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -21,7 +21,7 @@ ModuleVersion = '1.0.0'
 GUID = 'c186c527-5ef5-4a57-b7a2-1e443cc05036'
 
 # Author of this module
-Author = 'james'
+Author = 'Jimurrito'
 
 # Company or vendor of this module
 CompanyName = 'Virtrillo Software Solutions'
