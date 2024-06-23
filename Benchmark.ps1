@@ -13,8 +13,16 @@ param (
 $TotalTimer = [System.Diagnostics.Stopwatch]::StartNew()
 #
 [array]$BenchmarkLs = @()
+$MAX = ([Math]::Pow(2, $EXPO))
+[int]$old_round = 0
 #
-foreach ($n in 0..([Math]::Pow(2, $EXPO))) {
+Write-Progress -Activity "Benchmarking" -Status "0 of $Max completed" -PercentComplete 0
+#
+foreach ($n in 0..$MAX) {
+    #
+    # Handle progress bar rounding
+    Write-Progress -Activity "Benchmarking" -Status "$n of $Max completed" -PercentComplete ([math]::Round(($n / $MAX) * 100))
+    $old_round = $round
     #
     $StartTime = $TotalTimer.Elapsed
     #
@@ -24,10 +32,10 @@ foreach ($n in 0..([Math]::Pow(2, $EXPO))) {
     $El = $EndTime - $StartTime
     $BenchmarkLs += , @($n, $output, $El)
 }
+#
+Write-Progress -Activity "Benchmarking" -Completed
 # Make analytics
 $TotalTime += $BenchmarkLs | ForEach-Object { return $_[2] }
-# write results
-#$BenchmarkLs > "$PSScriptRoot/BenchMark_$EXPO.result"
 #
 $TotalTimer.Stop(); $Runtime = $TotalTimer.Elapsed
 Write-Host ("`nBenchmark Runtime: ({0})m ({1})s ({2})ms" -f $Runtime.Minutes, $Runtime.Seconds, $Runtime.Milliseconds)

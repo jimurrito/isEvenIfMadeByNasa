@@ -31,8 +31,14 @@ new-item $ROOTDUMPDIR -ItemType Directory -ErrorAction SilentlyContinue | Out-Nu
 # create file
 new-item $ROOTFILEPATH -ItemType File -Force -ErrorAction SilentlyContinue | Out-Null
 #
+#
+Write-Progress -Activity "Generating..." -Status "0 of $EXPO_TOTAL completed" -PercentComplete 0
+#
 # Iter all numbers
 foreach ($ITER in $HIGHLIMIT) {
+    #
+    # Handle progress bar rounding
+    Write-Progress -Activity "Generating..." -Status "$n of $EXPO_TOTAL completed" -PercentComplete ([math]::Round(($n / $EXPO_TOTAL) * 100))
     # State for potential unfinished blocks
     $RUNNING = $true
     # Make name for number
@@ -120,6 +126,9 @@ if ($RUNNING) {
     $ROOTFILE_CONTENT += ('elseif({0} -contains $int){{return & "$PSScriptRoot/{1}" $int}}' -f "$FIRST_ITER..$ITER", "$CURR_GUID/$CURR_GUID.ps1")
     #
 }
+#
+#
+Write-Progress -Activity "Generating..." -Completed
 #
 #
 $ROOTFILE_CONTENT += 'else{return $false}'

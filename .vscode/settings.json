@@ -36,8 +36,5 @@
         "untrigintillion",
         "unvigintillion",
         "vigintillion"
-    ],
-    "cSpell.enableFiletypes": [
-        "powershell"
     ]
 }
