@@ -33,11 +33,6 @@ new-item $ROOTDUMPDIR -ItemType Directory -ErrorAction SilentlyContinue | Out-Nu
 # create file
 new-item $ROOTFILEPATH -ItemType File -Force -ErrorAction SilentlyContinue | Out-Null
 #
-# Save iter save block
-$ITER_SAVE = {
-
-}
-#
 # Iter all numbers
 foreach ($ITER in $HIGHLIMIT) {
     # State for potential unfinished blocks
@@ -130,6 +125,9 @@ if ($RUNNING) {
     $ROOTFILE_CONTENT += ('elseif({0} -contains $int){{return & "$PSScriptRoot/{1}" $int}}' -f "$FIRST_ITER..$ITER", "$CURR_GUID/$CURR_GUID.ps1")
     #
 }
-
+#
+#
+$ROOTFILE_CONTENT += 'else{return $false}'
+#
 # write to root file
 Add-Content $ROOTFILEPATH -Value ($ROOTFILE_CONTENT -join "`n")
