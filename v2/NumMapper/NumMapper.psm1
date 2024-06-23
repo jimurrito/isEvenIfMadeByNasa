@@ -45,7 +45,7 @@ function Set-OctetChar2Name {
     }
     # Hundreds
     elseif ($Place -eq 0) {
-        return "{0}-hundred" -f (Set-OctetChar2Name $NumberChar 2)
+        return "{0}_hundred" -f (Set-OctetChar2Name $NumberChar 2)
     }
     # throw
     else {
@@ -213,10 +213,10 @@ function Set-Number2Name {
         # Octet is only a teen num
         elseif ($n.Length -eq 2 -and $n[0] -eq "1") { return Find-TeenRangeNumbers $n }
         # Octet is only two digits, not teen
-        elseif ($n.length -eq 2) { return "{0}-{1}" -f (Set-OctetChar2Name $n[0] 1), (Set-OctetChar2Name $n[1] 2) }
+        elseif ($n.length -eq 2) { return "{0}_{1}" -f (Set-OctetChar2Name $n[0] 1), (Set-OctetChar2Name $n[1] 2) }
         # octet contains a teen num
         elseif ($n[1] -eq '1') {
-            return ("{0}-{1}" -f (Set-OctetChar2Name $n[0] 0), (Find-TeenRangeNumbers ([string]($n[1, 2]) -replace "\s", "")))
+            return ("{0}_{1}" -f (Set-OctetChar2Name $n[0] 0), (Find-TeenRangeNumbers ([string]($n[1, 2]) -replace "\s", "")))
         }
         # Octet is all 0s - return nothing
         elseif ($n[0] -eq '0' -and $n[1] -eq '0' -and $n[2] -eq '0') {
@@ -245,7 +245,7 @@ function Set-Number2Name {
             #
         }
         # Joins octet | where-object { $_ } removes any possible null array values.
-        return (($applied | where-object { $_ } ) -join "-")
+        return (($applied | where-object { $_ } ) -join "_")
         #
     }
     #
@@ -261,9 +261,9 @@ function Set-Number2Name {
     [array]::Reverse($Names);
     #
     # Assigne place value
-    foreach ($i in 2..$length) { $Names[($i - 1)] = "{0}-{1}" -f $Names[($i - 1)], (Find-OctetSize $i) }
+    foreach ($i in 2..$length) { $Names[($i - 1)] = "{0}_{1}" -f $Names[($i - 1)], (Find-OctetSize $i) }
     #
     [array]::Reverse($Names);
     #
-    return ($Names | where-object { $_ }) -join "-"
+    return ($Names | where-object { $_ }) -join "_"
 }

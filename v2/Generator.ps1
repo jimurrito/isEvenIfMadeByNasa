@@ -1,33 +1,31 @@
 #
 param(
-    $EXPO = 10,
-    $EXPO_TOTAL = ([Math]::Pow(2, $EXPO)),
-    $HIGHLIMIT = 1..$EXPO_TOTAL,
-    $ROOTDUMPDIR = "$PSScriptRoot/is_even",
-    $ROOTFILEPATH = "$ROOTDUMPDIR/is_even.ps1",
-    $ROOTFILE_CONTENT = @('param([int]$int)', 'if($int-eq0){return $true}')
+    [int]$EXPO = 10,
+    [int]$CHARLIMIT = 30000,
+    #
+    [string]$ROOTDUMPDIR = "$PSScriptRoot/is_even",
+    [string]$ROOTFILEPATH = "$ROOTDUMPDIR/is_even.ps1",
+    [array]$ROOTFILE_CONTENT = @('param([int]$int)', 'if($int-eq0){return $true}')
+    
 )
 #
+import-module "$PSScriptRoot/NumMapper/NumMapper.psd1"
 #
-import-module "./v2/NumMapper/NumMapper.psd1"
+$TimerObj = [System.Diagnostics.Stopwatch]::StartNew()
 #
-# used in iters
+# Builders
+[int]$EXPO_TOTAL = ([Math]::Pow(2, $EXPO))
+[object]$HIGHLIMIT = 1..$EXPO_TOTAL
+#
+# Used in iters
 $ITER = 1
 $FIRST_ITER = $ITER
 $FUNCLIST = @()
 $FUNCNAMELIST = @()
-#
-#
-$CHARLIMIT = 30000
-# Catch for small exponents
-# ~60 char per 1 function
-# $CHARLIMIT = 60 * $EXPO_TOTAL, if $EXPO_TOTAL <= 500
-# without this, modules and rootscript statements will not be written
-#if ($EXPO_TOTAL -le 500) { $CHARLIMIT = 20 * $EXPO_TOTAL/10 }
-#
-#
 [string]$CURR_GUID = New-Guid
 #
+# Remove the old instance
+Remove-Item $ROOTDUMPDIR -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
 # create folder
 new-item $ROOTDUMPDIR -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 # create file
@@ -37,7 +35,6 @@ new-item $ROOTFILEPATH -ItemType File -Force -ErrorAction SilentlyContinue | Out
 foreach ($ITER in $HIGHLIMIT) {
     # State for potential unfinished blocks
     $RUNNING = $true
-    #
     # Make name for number
     $NumName = Set-Number2Name $ITER
     # function name
@@ -46,7 +43,6 @@ foreach ($ITER in $HIGHLIMIT) {
     $FUNCNAMELIST += , @($fncName, $ITER)
     # Generate named function - checks if number matches name, then checks if its true or false.
     $FUNCLIST += ('function {0}([int]$int){{if({1}-eq$int){{return ${2}}}}}' -f $fncName, "$ITER", ($ITER % 2 -eq 0))
-    #
     # Check char length - if this eval true, save functions to file(s)
     if ( (($FUNCLIST -join "`n").Length) -ge $CHARLIMIT) {
         #
@@ -57,7 +53,6 @@ foreach ($ITER in $HIGHLIMIT) {
         new-item "$ROOTDUMPDIR/$CURR_GUID/$CURR_GUID.ps1" -ItemType File -ErrorAction SilentlyContinue | Out-Null
         # Write functions to module file (.psm1)
         Set-Content "$ROOTDUMPDIR/$CURR_GUID/$CURR_GUID.psm1" -Value ($FUNCLIST -join "`n")
-        #
         #
         # Write to script file
         $scriptP = "$ROOTDUMPDIR/$CURR_GUID/$CURR_GUID.ps1"
@@ -131,3 +126,12 @@ $ROOTFILE_CONTENT += 'else{return $false}'
 #
 # write to root file
 Add-Content $ROOTFILEPATH -Value ($ROOTFILE_CONTENT -join "`n")
+#
+# Stop Per
+$TimerObj.Stop(); 
+$Runtime = $TimerObj.Elapsed;
+Write-Host ("`nGeneration Runtime: ({0})m ({1})s ({2})ms" -f $Runtime.Minutes, $Runtime.Seconds, $Runtime.Milliseconds) 
+#
+$allfiles = Get-ChildItem -path $ROOTDUMPDIR -Recurse -File
+write-host ("({0}) Files created. ({1}) Lines Written" -f $allfiles.count, ($allfiles | ForEach-Object { $_ | Get-Content }).Count)
+#
