@@ -45,7 +45,7 @@ foreach ($ITER in $HIGHLIMIT) {
     # Add to list
     $FUNCNAMELIST += , @($fncName, $ITER)
     # Generate named function - checks if number matches name, then checks if its true or false.
-    $FUNCLIST += ('function {0}([int]$int){{if({1}-eq$int){{return $int%2-eq0}}}}' -f $fncName, "$ITER")
+    $FUNCLIST += ('function {0}([int]$int){{if({1}-eq$int){{return ${2}}}}}' -f $fncName, "$ITER", ($ITER % 2 -eq 0))
     #
     # Check char length - if this eval true, save functions to file(s)
     if ( (($FUNCLIST -join "`n").Length) -ge $CHARLIMIT) {
