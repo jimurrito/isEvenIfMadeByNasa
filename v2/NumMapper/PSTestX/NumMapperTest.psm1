@@ -53,6 +53,13 @@ function Test-OneHuntwenty {
     )
     return Set-Number2Name $num
 }
+function Test-44000 {
+    [PSTest(44000, { $r -eq "forty-four-thousand" })]
+    param (
+        [int]$num
+    )
+    return Set-Number2Name $num
+}
 function Test-Biggest {
     [PSTest(2147483647, { $r -eq "two-billion-one-hundred-forty-seven-million-four-hundred-eighty-three-thousand-six-hundred-forty-seven" })]
     param (

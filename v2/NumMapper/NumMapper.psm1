@@ -213,10 +213,14 @@ function Set-Number2Name {
         # Octet is only a teen num
         elseif ($n.Length -eq 2 -and $n[0] -eq "1") { return Find-TeenRangeNumbers $n }
         # Octet is only two digits, not teen
-        elseif ($n.length -eq 2) { return Set-OctetChar2Name $n[0] 1 }
+        elseif ($n.length -eq 2) { return "{0}-{1}" -f (Set-OctetChar2Name $n[0] 1), (Set-OctetChar2Name $n[1] 2) }
         # octet contains a teen num
         elseif ($n[1] -eq '1') {
             return ("{0}-{1}" -f (Set-OctetChar2Name $n[0] 0), (Find-TeenRangeNumbers ([string]($n[1, 2]) -replace "\s", "")))
+        }
+        # Octet is all 0s - return nothing
+        elseif ($n[0] -eq '0' -and $n[1] -eq '0' -and $n[2] -eq '0') {
+            return ""
         }
         # number is a whole hundred
         elseif ($n[1] -eq '0' -and $n[2] -eq '0') {
@@ -261,5 +265,5 @@ function Set-Number2Name {
     #
     [array]::Reverse($Names);
     #
-    return $Names -join "-"
+    return ($Names | where-object { $_ }) -join "-"
 }
