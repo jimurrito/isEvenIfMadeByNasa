@@ -5,6 +5,11 @@ I was inspired after reading this [blog by andreasjhkarlsson](https://andreasjhk
 
 Please enjoy this abomination. ❤️
 
+> **Update**
+> 
+> Version 2 now supports `[int64]`. All numbers up to `63`, should work as an exponent. Unable to get `2^64 -1` to work without an overflow. Script is hard-limited to `63` as the highest value for `-EXPO` for now.
+>
+
 ## [Version 2](./v2/)
 
 ```powershell
