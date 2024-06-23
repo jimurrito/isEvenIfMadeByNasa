@@ -1,11 +1,11 @@
 #
 param(
-    [int]$EXPO = 10,
-    [int]$CHARLIMIT = 30000,
+    [int64]$EXPO = 10,
+    [int64]$CHARLIMIT = 30000,
     #
     [string]$ROOTDUMPDIR = "$PSScriptRoot/is_even",
     [string]$ROOTFILEPATH = "$ROOTDUMPDIR/is_even.ps1",
-    [array]$ROOTFILE_CONTENT = @('param([int]$int)', 'if($int-eq0){return $true}')
+    [array]$ROOTFILE_CONTENT = @('param([int64]$int)', 'if($int-eq0){return $true}')
     
 )
 #
@@ -14,8 +14,8 @@ import-module "$PSScriptRoot/NumMapper/NumMapper.psd1"
 $TimerObj = [System.Diagnostics.Stopwatch]::StartNew()
 #
 # Builders
-[int]$EXPO_TOTAL = ([Math]::Pow(2, $EXPO))
-[object]$HIGHLIMIT = 1..$EXPO_TOTAL
+if ($EXPO -gt 63) { throw "Value provided for -EXPO is too high. Input should be '<=63'" }
+[int64]$EXPO_TOTAL = ([bigint]::Pow(2, $EXPO)) - 1
 #
 # Used in iters
 $ITER = 1
@@ -35,10 +35,14 @@ new-item $ROOTFILEPATH -ItemType File -Force -ErrorAction SilentlyContinue | Out
 Write-Progress -Activity "Generating..." -Status "0 of $EXPO_TOTAL completed" -PercentComplete 0
 #
 # Iter all numbers
-foreach ($ITER in $HIGHLIMIT) {
+[int64]$ITER = 0
+#foreach ($ITER in $HIGHLIMIT) {
+while ($true) {
+    #
+    if ($ITER -eq $EXPO_TOTAL) { break }
     #
     # Handle progress bar rounding
-    Write-Progress -Activity "Generating..." -Status "$ITER of $EXPO_TOTAL completed" -PercentComplete ([math]::Round(($ITER / $EXPO_TOTAL) * 100))
+    Write-Progress -Activity "Generating..." -Status "$ITER of $EXPO_TOTAL completed" -PercentComplete ([math]::Round([long](($ITER / $EXPO_TOTAL) * 100)))
     # State for potential unfinished blocks
     $RUNNING = $true
     # Make name for number
@@ -48,7 +52,7 @@ foreach ($ITER in $HIGHLIMIT) {
     # Add to list
     $FUNCNAMELIST += , @($fncName, $ITER)
     # Generate named function - checks if number matches name, then checks if its true or false.
-    $FUNCLIST += ('function {0}([int]$int){{if({1}-eq$int){{return ${2}}}}}' -f $fncName, "$ITER", ($ITER % 2 -eq 0))
+    $FUNCLIST += ('function {0}([int64]$int){{if({1}-eq$int){{return ${2}}}}}' -f $fncName, "$ITER", ($ITER % 2 -eq 0))
     # Check char length - if this eval true, save functions to file(s)
     if ( (($FUNCLIST -join "`n").Length) -ge $CHARLIMIT) {
         #
@@ -63,7 +67,7 @@ foreach ($ITER in $HIGHLIMIT) {
         # Write to script file
         $scriptP = "$ROOTDUMPDIR/$CURR_GUID/$CURR_GUID.ps1"
         # params
-        $ScriptContent = @('param([int]$int)')
+        $ScriptContent = @('param([int64]$int)')
         # Import statment
         $ScriptContent += ('import-module "$PSScriptRoot/{0}.psm1"' -f $CURR_GUID)
         #
@@ -90,7 +94,11 @@ foreach ($ITER in $HIGHLIMIT) {
         [string]$CURR_GUID = New-Guid
         # Sets this to false so we can know if we exited the loop prior to saving again
         $RUNNING = $false
-    }    
+    }
+    #
+    # Iter since we are returning to loop
+    $ITER ++
+    #
 }
 # Unwritten catch
 if ($RUNNING) {
@@ -106,7 +114,7 @@ if ($RUNNING) {
     # Write to script file
     $scriptP = "$ROOTDUMPDIR/$CURR_GUID/$CURR_GUID.ps1"
     # params
-    $ScriptContent = @('param([int]$int)')
+    $ScriptContent = @('param([int64]$int)')
     # Import statment
     $ScriptContent += ('import-module "$PSScriptRoot/{0}.psm1"' -f $CURR_GUID)
     #
