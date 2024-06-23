@@ -38,7 +38,7 @@ Write-Progress -Activity "Generating..." -Status "0 of $EXPO_TOTAL completed" -P
 foreach ($ITER in $HIGHLIMIT) {
     #
     # Handle progress bar rounding
-    Write-Progress -Activity "Generating..." -Status "$ITER of $EXPO_TOTAL completed" -PercentComplete ([math]::Round(($n / $EXPO_TOTAL) * 100))
+    Write-Progress -Activity "Generating..." -Status "$ITER of $EXPO_TOTAL completed" -PercentComplete ([math]::Round(($ITER / $EXPO_TOTAL) * 100))
     # State for potential unfinished blocks
     $RUNNING = $true
     # Make name for number
