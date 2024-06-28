@@ -134,9 +134,14 @@ This version is much faster than the older version, in terms of generation time.
 | v2      | 4        | 0.0112s         | 1.8KB      |
 | v2      | 8        | 0.0701s         | 29.8KB     |
 | v2      | 16       | 30.506s         | 2.19MB     |
+| v2      | 32       | 52.7 Days       | 324GB      | 
 
 Biggest standout being 16-bit.
 `5286.970s > 30.506s` That is `~173 times` faster in v2.
+
+>**Note:**
+> 32-bit version will generate, but the resulting `is_even.ps1` file will not work. Executing it with any number will yield a stack-overflow. v3 will work to address this. v3 will create all code JIT (Just In Time) of the is_even calculation.
+
 
 <br>
 
